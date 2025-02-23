@@ -59,19 +59,23 @@ public class MaxmindGeolocationDatabase
             CityResponse response = cityDatabaseReader.city(addr);
 
             Optional.ofNullable(response.getCountry())
-                    .map(Country::getIsoCode)
+                    .map(Country::getNames)
+                    .map(m->m.get("zh-CN"))
                     .ifPresent(builder::setCountry);
             Optional.ofNullable(response.getMostSpecificSubdivision())
-                    .map(Subdivision::getName)
+                    .map(Subdivision::getNames)
+                    .map(m->m.get("zh-CN"))
                     .ifPresent(builder::setStateprov);
             Optional.ofNullable(response.getMostSpecificSubdivision())
                     .map(Subdivision::getIsoCode)
                     .ifPresent(builder::setStateprovCode);
             Optional.ofNullable(response.getCity())
-                    .map(City::getName)
+                    .map(City::getNames)
+                    .map(m->m.get("zh-CN"))
                     .ifPresent(builder::setCity);
             Optional.ofNullable(response.getContinent())
-                    .map(Continent::getCode)
+                    .map(Continent::getNames)
+                    .map(m->m.get("zh-CN"))
                     .ifPresent(builder::setContinent);
 
             Optional.ofNullable(response.getLocation())
