@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 public class GeoIpEntry {
 
     private final String country;
+    private final String countryCode;
     private final String stateprov;
     private final String stateprovCode;
     private final String mobileCountryCode;

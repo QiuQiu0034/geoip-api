@@ -94,6 +94,23 @@ public class GeoIpRestController {
         }
     }
 
+    /**
+     * Lookup the geolocation country information for an ip address.
+     */
+    @CrossOrigin(methods = RequestMethod.GET)
+    @GetMapping("/country/{address:.+}")
+    public ResponseEntity<String> lookupForCountry(@PathVariable("address") InetAddress address) {
+        final Optional<GeoIpEntry> entry = geolocations.lookup(address);
+
+        if (entry.isPresent()) {
+            return ResponseEntity.ok()
+                    .headers(new GeoIpEntryLinkHttpHeaders(address, entry.get()))
+                    .body(entry.get().getCountryCode());
+        } else {
+            return ResponseEntity.ok().body("");
+        }
+    }
+
     @RequestMapping(path = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, GeoIpEntry>> multiLookup(@RequestBody InetAddress[] ipAddresses) {
         if (ipAddresses.length > 100) {

@@ -59,6 +59,9 @@ public class MaxmindGeolocationDatabase
             CityResponse response = cityDatabaseReader.city(addr);
 
             Optional.ofNullable(response.getCountry())
+                    .map(Country::getIsoCode)
+                    .ifPresent(builder::setCountryCode);
+            Optional.ofNullable(response.getCountry())
                     .map(Country::getNames)
                     .map(m->m.get("zh-CN"))
                     .ifPresent(builder::setCountry);
